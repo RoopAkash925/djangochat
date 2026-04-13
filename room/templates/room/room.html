@@ -29,12 +29,10 @@
     const roomName = JSON.parse(document.getElementById('json-roomname').textContent);
     const username = JSON.parse(document.getElementById('json-username').textContent);
 
-    const chatSocket = new WebSocket(
-        const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+    const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
 
-        const chatSocket = new WebSocket(
-             protocol + window.location.host + '/ws/' + roomName + '/'
-);
+    const chatSocket = new WebSocket(
+        protocol + window.location.host + '/ws/' + roomName + '/'
     );
 
     chatSocket.onopen = function() {
@@ -67,5 +65,9 @@
 
         input.value = '';
     };
+    const socket = new WebSocket(
+    'wss://' + window.location.host + '/ws/' + roomName + '/'
+);
 </script>
+
 {% endblock %}

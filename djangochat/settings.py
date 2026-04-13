@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
+
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -79,6 +84,7 @@ ALLOWED_HOSTS = ["*"]
 
 
 
+
 REDIS_URL = os.environ.get("redis-cli --tls -u redis://default:gQAAAAAAAU_0AAIncDE2YmE1YTk5ZTMzMDU0OTE5YmMwMDBkNjI5MjFhMjJlZXAxODYwMDQ@light-anchovy-86004.upstash.io:6379")
 
 if REDIS_URL:
@@ -86,7 +92,7 @@ if REDIS_URL:
         "default": {
             "BACKEND": "channels_redis.core.RedisChannelLayer",
             "CONFIG": {
-                "hosts": [redis-cli --tls -u redis://default:gQAAAAAAAU_0AAIncDE2YmE1YTk5ZTMzMDU0OTE5YmMwMDBkNjI5MjFhMjJlZXAxODYwMDQ@light-anchovy-86004.upstash.io:6379],
+                "hosts": [REDIS_URL],
             },
         },
     }
@@ -100,13 +106,20 @@ else:
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
+
+
+
+DATABASES = {
+    'default': dj_database_url.parse(
+        os.environ.get("DATABASE_URL", "sqlite:///db.sqlite3")
+    )
+}
+import os
+
+ALLOWED_HOSTS = ['*']
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
