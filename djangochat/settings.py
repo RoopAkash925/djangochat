@@ -77,16 +77,25 @@ WSGI_APPLICATION = 'djangochat.wsgi.application'
 ASGI_APPLICATION = 'djangochat.asgi.application'
 ALLOWED_HOSTS = ["*"]  
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [{
-                "address": "redis-cli --tls -u redis://default:gQAAAAAAAU_0AAIncDE2YmE1YTk5ZTMzMDU0OTE5YmMwMDBkNjI5MjFhMjJlZXAxODYwMDQ@light-anchovy-86004.upstash.io:6379",
-            }],
+
+
+REDIS_URL = os.environ.get("redis-cli --tls -u redis://default:gQAAAAAAAU_0AAIncDE2YmE1YTk5ZTMzMDU0OTE5YmMwMDBkNjI5MjFhMjJlZXAxODYwMDQ@light-anchovy-86004.upstash.io:6379")
+
+if REDIS_URL:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [redis-cli --tls -u redis://default:gQAAAAAAAU_0AAIncDE2YmE1YTk5ZTMzMDU0OTE5YmMwMDBkNjI5MjFhMjJlZXAxODYwMDQ@light-anchovy-86004.upstash.io:6379],
+            },
         },
-    },
-}
+    }
+else:
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer",
+        },
+    }
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
